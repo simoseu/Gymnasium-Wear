@@ -35,14 +35,14 @@ export default {
 
 <template>
     <div class="container mt-5">
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Nome Articolo</th>
-                    <th scope="col">Prezzo</th>
-                    <th scope="col">Descrizione</th>
-                    <th scope="col">Azione</th>
+                    <th class="d-none d-md-table-cell" scope="col">Prezzo</th>
+                    <th class="d-none d-lg-table-cell" scope="col">Descrizione</th>
+                    <th class="text-center" scope="col">Azione</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
