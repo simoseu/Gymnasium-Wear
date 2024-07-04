@@ -14,7 +14,7 @@ export default {
     methods: {
         async fetchArticles() {
             try {
-                const res = await fetch('http://localhost:5000/articoli', {
+                const res = await fetch('http://localhost:5000/api/articles', {
                     method: 'GET'
                 });
                 console.log(res)
