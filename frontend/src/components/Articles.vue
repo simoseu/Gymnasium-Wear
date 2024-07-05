@@ -1,40 +1,29 @@
 <script>
 import ArticlePreview from '@/components/ArticlePreview.vue';
 
+// import dello store, delle funzioni mapState e mapActions per utilizzare lo store e le actions dello store
+import { mapState, mapActions } from 'pinia';
+import { useArticleStore } from '@/store/articles';
+
 export default {
     name: 'Articles',
     components: {
         ArticlePreview
     },
-    data() {
-        return {
-            articles: [],
-        }
+    computed: {
+        ...mapState(useArticleStore, ['articles']),
     },
     methods: {
-        async fetchArticles() {
-            try {
-                const res = await fetch('http://localhost:5000/api/articles', {
-                    method: 'GET'
-                });
-                console.log(res)
-                const data = await res.json();
-                console.log(data);
-                return data;
-            } catch (error) {
-                console.log(error);
-            }
-        }
+        ...mapActions(useArticleStore, ['fetchArticles']),
     },
-    async created() {
-        this.articles = await this.fetchArticles();
+    created() {
+        this.fetchArticles();
     }
-
 }
 </script>
 
 <template>
-    <div class="container mt-5">
+    <div class="container mt-3">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -46,7 +35,11 @@ export default {
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <ArticlePreview :key="article.id" v-for="article in articles" :article="article" />
+                <ArticlePreview v-if="articles.length > 0" :key="article.id" v-for="article in articles"
+                    :article="article" />
+                <td v-else colspan="5" class="text-center">
+                    <h2 class="mt-5">Nessun Articolo Presente nel Database </h2>
+                </td>
             </tbody>
         </table>
     </div>

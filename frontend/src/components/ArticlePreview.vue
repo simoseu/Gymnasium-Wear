@@ -18,6 +18,11 @@ export default {
             trash: trash
         }
     },
+    methods: {
+        viewArticle() {
+            this.$router.push(`/articles/${this.article.id}`);
+        }
+    }
 };
 </script>
 
@@ -25,10 +30,10 @@ export default {
     <tr>
         <td>{{ article.id }}</td>
         <td>{{ article.name }}</td>
-        <td class="d-none d-md-table-cell">{{ article.price }}</td>
+        <td class="d-none d-md-table-cell">€ {{ article.price }}</td>
         <td class="d-none d-lg-table-cell">{{ article.description.slice(0, 50) }}...</td>
         <td class="text-center">
-            <button @click="onClick()" class="custom-btn detail">
+            <button @click="viewArticle()" class="custom-btn detail">
                 <img :src="search" alt="Vedi Dettagli Articolo" title="Vedi Dettagli Articolo" />
             </button>
             <button @click="onClick()" class="custom-btn edit">

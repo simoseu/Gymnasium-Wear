@@ -11,7 +11,20 @@ export default {
 
 <template>
     <div class="container mt-5 text-center">
-        <h2>Lista degli articoli</h2>
+        <h1 class="fw-bold mt-2"> Lista degli articoli</h1>
+        <hr />
+        <div class="w-100 text-end">
+            <button class="btn btn-outline-primary "> Aggiungi nuovo articolo</button>
+        </div>
+        <Articles />
     </div>
-    <Articles />
 </template>
+
+<style scoped>
+.container {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 1rem;
+    min-height: 80%;
+}
+</style>

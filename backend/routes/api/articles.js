@@ -34,7 +34,7 @@ router.get('/:id', (req, res) => {
         const found = articles.some(article => article.id === articleId);
         // Se esiste lo restituisco, altrimenti restituisco un messaggio di errore
         if (found) {
-            res.json(articles.filter(article => article.id === articleId));
+            res.json(articles.find(article => article.id === articleId));
         } else {
             res.status(400).json({ msg: `Nessun articolo trovato con id ${articleId}` });
         }
@@ -53,9 +53,12 @@ router.post('/', (req, res) => {
             return console.log("Errire nella lettura del file");
         }
         articles = JSON.parse(articles);
+        // Ultimo id presente nell'array O 1 se l'array è vuoto
+        const lastId = articles.length > 0 ? articles[articles.length - 1].id : 0;
+
         // Creazione del nuovo articolo
         const newArticle = {
-            id: articles.length + 1, // id incrementale
+            id: lastId + 1, // id sucessivo all'ultimo id presente nell'array
             name: req.body.name,
             price: req.body.price,
             description: req.body.description || '', // Se l'utente non inserisce una descrizione viene inserita una stringa vuota
@@ -65,7 +68,7 @@ router.post('/', (req, res) => {
         // Aggiungo il nuovo articolo all'array
         articles.push(newArticle);
 
-        fs.writeFile(dbPath, JSON.stringify(articles), err => {
+        fs.writeFile(dbPath, JSON.stringify(articles, null, 4), err => {
             if (err) {
                 return console.log("Errore nel salvataggio del file");
             }
