@@ -10,10 +10,10 @@ const dbPath = path.join(__dirname, '..', '..', 'db', 'db.json');
 // Restituisce tutti gli articoli
 router.get('/', (req, res) => {
 
-    console.log(dbPath)
+    //console.log(dbPath)
     fs.readFile(dbPath, 'utf8', (err, articles) => {
         if (err) {
-            return console.log("Errore nella lettura del file");
+            res.status(500).json({ msg: "Errore nella lettura del db" });
         }
         res.json(JSON.parse(articles));
     })
@@ -26,15 +26,15 @@ router.get('/:id', (req, res) => {
 
     fs.readFile(dbPath, 'utf8', (err, articles) => {
         if (err) {
-            return console.log("Errore nella lettura del file");
+            res.status(500).json({ msg: "Errore nella lettura del db" });
         }
         // console.log(articles)
         articles = JSON.parse(articles);
-        // Controllo se esiste l'articolo con l'id richiesto
-        const found = articles.some(article => article.id === articleId);
+        // Assegno alla costante article l'articolo, se esiste l'articolo con l'id richiesto
+        const article = articles.find(article => article.id === articleId);
         // Se esiste lo restituisco, altrimenti restituisco un messaggio di errore
-        if (found) {
-            res.json(articles.find(article => article.id === articleId));
+        if (article) {
+            res.json(article);
         } else {
             res.status(400).json({ msg: `Nessun articolo trovato con id ${articleId}` });
         }
@@ -50,7 +50,7 @@ router.post('/', (req, res) => {
 
     fs.readFile(dbPath, 'utf8', (err, articles) => {
         if (err) {
-            return console.log("Errire nella lettura del file");
+            res.status(500).json({ msg: "Errore nella lettura del db" });
         }
         articles = JSON.parse(articles);
         // Ultimo id presente nell'array O 1 se l'array è vuoto
@@ -70,9 +70,9 @@ router.post('/', (req, res) => {
 
         fs.writeFile(dbPath, JSON.stringify(articles, null, 4), err => {
             if (err) {
-                return console.log("Errore nel salvataggio del file");
+                res.status(500).json({ msg: "Errore nell'aggiunta dell'articolo..." });
             }
-            res.json(articles);
+            res.json({ msg: "Articolo aggiunto con successo!", id: newArticle.id });
         });
     });
 });
@@ -84,7 +84,7 @@ router.put('/:id', (req, res) => {
 
     fs.readFile(dbPath, 'utf8', (err, articles) => {
         if (err) {
-            return console.log("Errore nella lettura del file");
+            res.status(500).json({ msg: "Errore nella lettura del db" });
         }
         // console.log(articles)
         articles = JSON.parse(articles);
@@ -123,7 +123,7 @@ router.delete('/:id', (req, res) => {
 
     fs.readFile(dbPath, 'utf8', (err, articles) => {
         if (err) {
-            return console.log("Errore nella lettura del file");
+            res.status(500).json({ msg: "Errore nella lettura del db" });
         }
         // console.log(articles)
         articles = JSON.parse(articles);
@@ -133,12 +133,13 @@ router.delete('/:id', (req, res) => {
 
         // Se esiste lo elimino, altrimenti restituisco un messaggio di errore
         if (index !== -1) {
-            articles = articles.filter(article => article.id !== articleId);
+            // Rimuovo l'articolo dall'array utilizzando il metodo splice
+            articles.splice(index, 1);
             fs.writeFile(dbPath, JSON.stringify(articles), err => {
                 if (err) {
-                    return console.log("Errore nel salvataggio del file");
+                    res.status(500).json({ msg: "Errore nella cancellazione dell'articolo dal db" });
                 }
-                res.json({ msg: "Articolo eliminato con successo", articles });
+                res.json({ msg: "Articolo eliminato con successo!", articles });
             });
         } else {
             res.status(400).json({ msg: `Nessun articolo trovato con id ${articleId}` });

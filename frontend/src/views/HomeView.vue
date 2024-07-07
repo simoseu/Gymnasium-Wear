@@ -11,10 +11,14 @@ export default {
 
 <template>
     <div class="container mt-5 text-center">
-        <h1 class="fw-bold mt-2"> Lista degli articoli</h1>
-        <hr />
+        <h1 class="fw-bold mt-2 primary-color"> Lista degli articoli</h1>
+        <div class="w-100">
+            <hr class="w-50 mx-auto primary-color" />
+        </div>
         <div class="w-100 text-end">
-            <button class="btn btn-outline-primary "> Aggiungi nuovo articolo</button>
+            <RouterLink to="/articles/add">
+                <button class="btn-custom btn-custom-primary"> Aggiungi nuovo articolo</button>
+            </RouterLink>
         </div>
         <Articles />
     </div>
