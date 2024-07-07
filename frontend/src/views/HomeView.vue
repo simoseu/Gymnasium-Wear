@@ -26,9 +26,6 @@ export default {
 
 <style scoped>
 .container {
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 1rem;
     min-height: 80%;
 }
 </style>

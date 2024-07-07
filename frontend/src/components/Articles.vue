@@ -28,9 +28,13 @@ export default {
     },
     methods: {
         ...mapActions(useArticleStore, ['fetchArticles', 'deleteArticle']),
-
+        // Metodo che reindirizza alla pagina di dettaglio di un articolo
         viewArticle(articleId) {
             this.$router.push(`/articles/${articleId}`);
+        },
+        // Metodo che reindirizza alla pagina di modifica di un articolo
+        editArticle(articleId) {
+            this.$router.push(`/articles/edit/${articleId}`);
         },
         // Metodo per mostrare il popup di conferma elimnazione di un articolo
         showDeletePopup(articleId) {
@@ -92,7 +96,7 @@ export default {
             </thead>
             <tbody class="table-group-divider">
                 <ArticlePreview v-if="articles.length > 0" :key="article.id" v-for="article in articles"
-                    :article="article" @view-article="viewArticle" @delete="showDeletePopup" />
+                    :article="article" @view-article="viewArticle" @delete="showDeletePopup" @edit="editArticle" />
                 <td v-else colspan="5" class="text-center">
                     <h2 class="mt-5">Nessun Articolo Presente nel Database </h2>
                 </td>

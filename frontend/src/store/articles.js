@@ -94,6 +94,31 @@ export const useArticleStore = defineStore({
                 throw (`Errore di comunicazione con il server...`);
             }
         },
+        // PUT per la modifica di un articolo
+        async editArticle(article) {
+            try {
+                // Richiesta PUT all'API per modificare l'articolo con l'id specificato
+                const res = await fetch(`http://localhost:5000/api/articles/${article.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(article)
+                });
+
+                const data = await res.json();
+                console.log(data);
+                // Se lo status della risposta è 400 o 500 lancio un errore altrimenti restituisco il messaggio di successo
+                if (res.status === 400 || res.status === 500) {
+                    throw (data.msg);
+                } else {
+                    return data;
+                }
+            }
+            catch (error) {
+                throw (`Errore di comunicazione con il server...`);
+            }
+        }
     }
 
 });

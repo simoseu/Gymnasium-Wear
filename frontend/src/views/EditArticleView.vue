@@ -13,6 +13,7 @@ export default {
     data() {
         return {
             article: {
+                id: null,
                 name: "",
                 price: "",
                 description: "",
@@ -25,9 +26,12 @@ export default {
         }
     },
     methods: {
-        ...mapActions(useArticleStore, ['addArticle']),
+        ...mapActions(useArticleStore, ['fetchArticleById', 'editArticle']),
         /* Metodo per effettuare la chiamata al server e mostrare il messaggio di successo/errore
            se l'aggiunta avviene con successo viene reindirizzarto alla pagina dell'articolo appena aggiunto */
+        cancel() {
+            this.$router.push('/');
+        },
         async onSubmit(e) {
 
             e.preventDefault();
@@ -37,12 +41,12 @@ export default {
                 alert('Per favore, inserisci il nome e il prezzo dell\'articolo');
                 return;
             }
-            /* Chiamata al metodo che effettua la POST al server 
+            /* Chiamata al metodo che effettua la PUT al server per modificare l'articolo
                 Se avviene con successo: viene mostrato un messaggio di successo e viene reindirizzato alla pagina dell'articolo
                 Altrimenti viene mostrato un messaggio di errore e rimane nella pagina*/
             try {
                 console.log(this.article)
-                const data = await this.addArticle(this.article);
+                const data = await this.editArticle(this.article);
 
                 console.log("ID ARTICOLO: ", data.id);
                 this.success = true;
@@ -62,6 +66,16 @@ export default {
                 }, 3000);
             }
         }
+    },
+    async mounted() {
+        console.log("ID ARTICOLO: ", this.$route.params.id);
+        try {
+            this.article = await this.fetchArticleById(this.$route.params.id);
+            console.log(this.article)
+        } catch (error) {
+            console.log("ERRORE: ", error)
+        }
+
     }
 }
 </script>
@@ -69,7 +83,7 @@ export default {
 <template>
     <AlertMessage v-if="show" :success="success" :message="message" />
     <div class="container mt-5">
-        <h1 class="text-center fw-bold primary-color">Aggiungi un nuovo articolo</h1>
+        <h1 class="text-center fw-bold primary-color">Modifica Articolo</h1>
         <div class="w-100 primary-color">
             <hr class="w-50 mx-auto" />
         </div>
@@ -95,7 +109,10 @@ export default {
                 <input type="file" class="form-control" id="image">
             </div>
             <div class=" text-center mt-5">
-                <button type="submit" class="btn-custom btn-custom-primary">Aggiungi Articolo</button>
+                <button class="btn-custom btn-custom-delete mx-2" @click="cancel">
+                    Annulla
+                </button>
+                <button type="submit" class="btn-custom btn-custom-primary mx-2">Modifica Articolo</button>
             </div>
         </form>
     </div>

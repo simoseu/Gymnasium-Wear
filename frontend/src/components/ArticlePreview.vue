@@ -25,6 +25,9 @@ export default {
         deleteArticle() {
             this.$emit('delete', this.article.id);
         },
+        editArticle() {
+            this.$emit('edit', this.article.id);
+        }
     }
 };
 </script>
@@ -39,7 +42,7 @@ export default {
             <button @click="viewArticle" class="custom-btn detail">
                 <img :src="search" alt="Vedi Dettagli Articolo" title="Vedi Dettagli Articolo" />
             </button>
-            <button @click="onClik()" class="custom-btn edit">
+            <button @click="editArticle" class="custom-btn edit">
                 <img :src="pencil" alt="Modifica Articolo" title="Modifica Articolo" />
             </button>
             <button @click="deleteArticle" class="custom-btn delete">

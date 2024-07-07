@@ -1,5 +1,5 @@
 <script>
-import check from "@/assets/img/check-circle.svg?url";
+import check from "@/assets/img/check-circle.svg";
 import error from "@/assets/img/exclamation-circle.svg";
 
 export default {

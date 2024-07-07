@@ -105,11 +105,11 @@ router.put('/:id', (req, res) => {
 
             fs.writeFile(dbPath, JSON.stringify(articles), err => {
                 if (err) {
-                    return console.log("Errore nel salvataggio del file");
+                    res.status(500).json({ msg: "Errore nella modifica dell'articolo dal db" });
                 }
                 res.json(articles);
             });
-            res.json({ msg: 'Articolo modificato', article: articles[index] });
+            res.json({ msg: 'Articolo modificato con successo!', id: articles[index].id });
         } else {
             res.status(400).json({ msg: `Nessun articolo trovato con id ${articleId}` });
         }
