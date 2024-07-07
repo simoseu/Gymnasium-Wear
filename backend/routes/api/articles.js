@@ -107,9 +107,8 @@ router.put('/:id', (req, res) => {
                 if (err) {
                     res.status(500).json({ msg: "Errore nella modifica dell'articolo dal db" });
                 }
-                res.json(articles);
+                res.json({ msg: 'Articolo modificato con successo!', id: articles[index].id });
             });
-            res.json({ msg: 'Articolo modificato con successo!', id: articles[index].id });
         } else {
             res.status(400).json({ msg: `Nessun articolo trovato con id ${articleId}` });
         }
