@@ -51,6 +51,7 @@ export default {
             // In caso di successo viene mmostrato un  messaggio di successo, altrimenti un messaggio di errore per 3 secondi
             try {
                 this.message = await this.deleteArticle(this.articleToDelete);
+                this.articles = this.getArticles;
                 this.success = true;
             } catch (error) {
                 console.error(error);
@@ -74,7 +75,7 @@ export default {
         try {
             await this.fetchArticles();
             this.articles = this.getArticles;
-            console.log(this.articles);
+            //console.log(this.articles);
         } catch (error) {
             console.log(error);
         }

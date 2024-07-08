@@ -120,7 +120,7 @@ export const useArticleStore = defineStore({
                     id: article.id,
                     name: article.name,
                     price: article.price,
-                    description: article.description.substring(0, 50) + '...',
+                    description: article.description ? article.description.substring(0, 50) + '...' : 'Nessuna descrizione disponibile',
                 }
             });
         }

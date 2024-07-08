@@ -43,6 +43,7 @@ export default {
                     </div>
                     <p><span class="fw-bold my-4">Prezzo articolo: € </span> {{ article.price }}</p>
                     <p class="text-break"><span class="fw-bold my-4">Descrizione articolo:</span> {{ article.description
+                        ? article.description : "Nessuna descrizione disponibile"
                         }}</p>
                 </div>
                 <div class="col-md-6">
