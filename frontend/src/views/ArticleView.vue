@@ -1,7 +1,6 @@
 <script>
-import imagePlaceholder from "@/assets/img/no-img.avif";
 // import dello store, della funzione mapActions per utilizzare lo store e le actions dello store
-import { mapActions } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 import { useArticleStore } from '@/store/articles';
 
 export default {
@@ -10,21 +9,25 @@ export default {
         return {
             article: null,
             errorMessage: null,
-            imagePlaceholder: imagePlaceholder
+            imageUrl: null
         };
     },
     methods: {
         ...mapActions(useArticleStore, ['fetchArticleById']),
     },
     async created() {
-        // Ottenimento dell'id dell'articolo dall'url
+        // Ottenimento dell'id dell'articolo dall'url e chiamata alla funzione fetchArticleById per ottenere l'articolo
         try {
             this.article = await this.fetchArticleById(this.$route.params.id);
+            this.imageUrl = `${this.getImagesBaseUrl}${this.article.image}`;
         } catch (error) {
             console.error(error);
             this.errorMessage = error;
         }
-    }
+    },
+    computed: {
+        ...mapState(useArticleStore, ['getImagesBaseUrl']),
+    },
 }
 </script>
 
@@ -34,14 +37,16 @@ export default {
             <div class="row">
                 <div class="col-md-6">
                     <div class="title-container mb-4">
-                        <h1 class="text-center text-md-start primary-color fw-bold my-2">{{ article.name }}</h1>
+                        <h1 class="text-center text-md-start primary-color fw-bold my-2 text-break">{{ article.name }}
+                        </h1>
                         <p><span class="fw-bold">ID ARTICOLO:</span> {{ article.id }}</p>
                     </div>
                     <p><span class="fw-bold my-4">Prezzo articolo: € </span> {{ article.price }}</p>
-                    <p><span class="fw-bold my-4">Descrizione articolo:</span> {{ article.description }}</p>
+                    <p class="text-break"><span class="fw-bold my-4">Descrizione articolo:</span> {{ article.description
+                        }}</p>
                 </div>
                 <div class="col-md-6">
-                    <img class="m-0 article-img" :src="imagePlaceholder" />
+                    <img class="m-0 article-img" :src="imageUrl" />
                 </div>
             </div>
         </div>
@@ -71,7 +76,7 @@ export default {
 
 .article-img {
     width: 100%;
-    height: auto;
     border-radius: 20px;
+    object-fit: contain;
 }
 </style>

@@ -1,1 +1,58 @@
-[{"id":1,"name":"Nike Air Force 1","price":"110","description":"La scarpa Nike Air Force 1 è una tra le più vendute al momento, sempre alla moda e con una comodità assicurata.","image":""},{"id":2,"name":"Nike Air Max 97","price":180,"description":"Le Nike Air Max 97 sono un modello iconico, con un design che si ispira ai treni ad alta velocità giapponesi.","image":"img"},{"id":3,"name":"Adidas Camasdadsaus","price":"199","description":"Questa è una prova della descirzione.","image":"img"},{"id":5,"name":"Maglia Termica Nike Nera","price":"79,99","description":"Maglia termica dal tessuto premium, con una capacità di resitere a bassissime temperature.","image":""},{"id":6,"name":"Nike Air Force 1","price":"110","description":"La scarpa Nike Air Force 1 è una tra le più vendute al momento, sempre alla moda e con una comodità assicurata.","image":""},{"id":7,"name":"Prova articolo5","price":21,"description":"Prova enne","image":""}]
+[
+    {
+        "id": 1,
+        "name": "Nike Air Force 1",
+        "price": "90",
+        "description": "La scarpa Nike Air Force 1 è una tra le più vendute al momento, sempre alla moda e con una comodità assicurata.",
+        "image": "no-img.avif"
+    },
+    {
+        "id": 2,
+        "name": "Nike Air Max 97",
+        "price": "180",
+        "description": "Le Nike Air Max 97 sono un modello iconico, con un design che si ispira ai treni ad alta velocità giapponesi.",
+        "image": "no-img.avif"
+    },
+    {
+        "id": 3,
+        "name": "Adidas Camasdadsaus",
+        "price": "199",
+        "description": "Questa è una prova della descirzione.",
+        "image": "no-img.avif"
+    },
+    {
+        "id": 5,
+        "name": "Maglia Termica Nike Nera",
+        "price": "79,99",
+        "description": "Maglia termica dal tessuto premium, con una capacità di resitere a bassissime temperature.",
+        "image": "no-img.avif"
+    },
+    {
+        "id": 6,
+        "name": "Nike Air Force 1",
+        "price": "110",
+        "description": "La scarpa Nike Air Force 1 è una tra le più vendute al momento, sempre alla moda e con una comodità assicurata.",
+        "image": "no-img.avif"
+    },
+    {
+        "id": 7,
+        "name": "Prova articolo6",
+        "price": "213",
+        "description": "Prova 23.431",
+        "image": "1720475572343-air-force.png"
+    },
+    {
+        "id": 8,
+        "name": "123",
+        "price": "123",
+        "description": "12322",
+        "image": "1720476039165-campus.avif"
+    },
+    {
+        "id": 9,
+        "name": "asd",
+        "price": "213",
+        "description": "asd",
+        "image": "1720476058364-air-force.png"
+    }
+]

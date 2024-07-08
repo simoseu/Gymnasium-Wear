@@ -3,7 +3,8 @@ import { defineStore } from 'pinia';
 export const useArticleStore = defineStore({
     id: 'articles',
     state: () => ({
-        articles: []
+        articles: [],
+        imagesBaseUrl: 'http://localhost:5000/uploads/'
     }),
     actions: {
         // Get di tutti gli articoli
@@ -53,10 +54,7 @@ export const useArticleStore = defineStore({
                 // Richiesta POST all'API per aggiungere un nuovo articolo
                 const res = await fetch('http://localhost:5000/api/articles', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(article)
+                    body: article
                 });
 
                 const data = await res.json();
@@ -95,15 +93,13 @@ export const useArticleStore = defineStore({
             }
         },
         // PUT per la modifica di un articolo
-        async editArticle(article) {
+        async editArticle(articleId, article) {
             try {
+                console.log("EDIT: ", ...article)
                 // Richiesta PUT all'API per modificare l'articolo con l'id specificato
-                const res = await fetch(`http://localhost:5000/api/articles/${article.id}`, {
+                const res = await fetch(`http://localhost:5000/api/articles/${articleId}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(article)
+                    body: article
                 });
 
                 const data = await res.json();
@@ -118,6 +114,11 @@ export const useArticleStore = defineStore({
             catch (error) {
                 throw (`Errore di comunicazione con il server...`);
             }
+        }
+    },
+    getters: {
+        getImagesBaseUrl() {
+            return this.imagesBaseUrl;
         }
     }
 

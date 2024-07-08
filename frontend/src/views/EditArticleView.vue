@@ -27,11 +27,21 @@ export default {
     },
     methods: {
         ...mapActions(useArticleStore, ['fetchArticleById', 'editArticle']),
-        /* Metodo per effettuare la chiamata al server e mostrare il messaggio di successo/errore
-           se l'aggiunta avviene con successo viene reindirizzarto alla pagina dell'articolo appena aggiunto */
+        changeImage(e) {
+            // Se il file è più grande di 2MB viene mostrato un alert di errore
+            if (e.target.files[0].size > 2 * 1024 * 1024) {
+                alert('Immagine troppo grande, dimensione massima consentita 2MB');
+                this.$refs.imageInput.value = null; // Reimposto il valore dell'input file a null
+
+            } else {
+                this.article.image = e.target.files[0];
+            }
+        },
         cancel() {
             this.$router.push('/');
         },
+        /* Metodo per effettuare la chiamata al server e mostrare il messaggio di successo/errore
+           se l'aggiunta avviene con successo viene reindirizzarto alla pagina dell'articolo appena aggiunto */
         async onSubmit(e) {
 
             e.preventDefault();
@@ -41,20 +51,25 @@ export default {
                 alert('Per favore, inserisci il nome e il prezzo dell\'articolo');
                 return;
             }
+            // Creazione di un oggetto FormData per inviare i dati al server
+            const formData = new FormData();
+            formData.append('image', this.article.image);
+            formData.append('name', this.article.name);
+            formData.append('price', this.article.price);
+            formData.append('description', this.article.description);
+            formData.append('id', this.article.id);
             /* Chiamata al metodo che effettua la PUT al server per modificare l'articolo
                 Se avviene con successo: viene mostrato un messaggio di successo e viene reindirizzato alla pagina dell'articolo
                 Altrimenti viene mostrato un messaggio di errore e rimane nella pagina*/
             try {
-                console.log(this.article)
-                const data = await this.editArticle(this.article);
-
-                console.log("ID ARTICOLO: ", data.id);
-                this.success = true;
-                this.message = data.msg;
-                this.articleId = data.id;
-
+                // se l'articolo è stato modificato con successo viene posto l'attributo success a true, il messaggio al messaggio ricevuto e salvato l'id dell'articolo
+                await this.editArticle(this.article.id, formData).then(data => {
+                    this.success = true;
+                    this.message = data.msg;
+                    this.articleId = data.id;
+                });
             } catch (error) {
-                console.log("ERRORE: ", error)
+                // se si è verificato un errore viene salvato il messaggio di errore
                 this.message = error;
             } finally {
                 // Viene mostrato il messaggio di successo/errrore per 3 secondi e in caso di successo viene riindirizzato alla pagina dell'articolo
@@ -68,14 +83,12 @@ export default {
         }
     },
     async mounted() {
-        console.log("ID ARTICOLO: ", this.$route.params.id);
+        // recupero le informazioni dell'articolo che si vuole modificare
         try {
             this.article = await this.fetchArticleById(this.$route.params.id);
-            console.log(this.article)
         } catch (error) {
             console.log("ERRORE: ", error)
         }
-
     }
 }
 </script>
@@ -87,7 +100,7 @@ export default {
         <div class="w-100 primary-color">
             <hr class="w-50 mx-auto" />
         </div>
-        <form class="mt-4" @submit="onSubmit">
+        <form class="mt-4" @submit="onSubmit" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="name" class="form-label fw-bold">Nome Articolo</label>
                 <input type="text" class="form-control " id="name" placeholder="Inserire il nome dell'articolo"
@@ -106,7 +119,8 @@ export default {
 
             <div class="mb-3">
                 <label for="image" class="form-label fw-bold">Immagine Articolo (opzionale)</label>
-                <input type="file" class="form-control" id="image">
+                <input type="file" name="image" accept="image/*" class="form-control" id="image" @change="changeImage"
+                    ref="imageInput">
             </div>
             <div class=" text-center mt-5">
                 <button class="btn-custom btn-custom-delete mx-2" @click="cancel">

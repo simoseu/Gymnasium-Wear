@@ -26,28 +26,45 @@ export default {
     },
     methods: {
         ...mapActions(useArticleStore, ['addArticle']),
+        changeImage(e) {
+            // Se il file è più grande di 2MB viene mostrato un alert di errore
+            if (e.target.files[0].size > 2 * 1024 * 1024) {
+                alert('Immagine troppo grande, dimensione massima consentita 2MB');
+                this.$refs.imageInput.value = null; // Reimposto il valore dell'input file a null
+
+            } else {
+                this.article.image = e.target.files[0];
+            }
+        },
+        cancel() {
+            this.$router.push('/');
+        },
         /* Metodo per effettuare la chiamata al server e mostrare il messaggio di successo/errore
            se l'aggiunta avviene con successo viene reindirizzarto alla pagina dell'articolo appena aggiunto */
         async onSubmit(e) {
 
             e.preventDefault();
-            console.log("ECOMI")
+
             // Se non sono stati inseriti il nome e il prezzo dell'articolo
             if (!this.article.name || !this.article.price) {
                 alert('Per favore, inserisci il nome e il prezzo dell\'articolo');
                 return;
             }
+            // Creazione di un oggetto FormData per inviare i dati al server
+            const formData = new FormData();
+            formData.append('image', this.article.image);
+            formData.append('name', this.article.name);
+            formData.append('price', this.article.price);
+            formData.append('description', this.article.description);
             /* Chiamata al metodo che effettua la POST al server 
                 Se avviene con successo: viene mostrato un messaggio di successo e viene reindirizzato alla pagina dell'articolo
                 Altrimenti viene mostrato un messaggio di errore e rimane nella pagina*/
             try {
-                console.log(this.article)
-                const data = await this.addArticle(this.article);
-
-                console.log("ID ARTICOLO: ", data.id);
-                this.success = true;
-                this.message = data.msg;
-                this.articleId = data.id;
+                await this.addArticle(formData).then(data => {
+                    this.success = true;
+                    this.message = data.msg;
+                    this.articleId = data.id;
+                });
 
             } catch (error) {
                 console.log("ERRORE: ", error)
@@ -92,7 +109,8 @@ export default {
 
             <div class="mb-3">
                 <label for="image" class="form-label fw-bold">Immagine Articolo (opzionale)</label>
-                <input type="file" class="form-control" id="image">
+                <input type="file" name="image" accept="image/*" class="form-control" id="image" @change="changeImage"
+                    ref="imageInput">
             </div>
             <div class=" text-center mt-5">
                 <button type="submit" class="btn-custom btn-custom-primary">Aggiungi Articolo</button>
