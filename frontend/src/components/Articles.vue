@@ -16,15 +16,13 @@ export default {
     },
     data() {
         return {
+            articles: null,
             showPopup: false,
             articleToDelete: null,
             showAlert: false,
             success: false,
             message: null,
         }
-    },
-    computed: {
-        ...mapState(useArticleStore, ['articles']),
     },
     methods: {
         ...mapActions(useArticleStore, ['fetchArticles', 'deleteArticle']),
@@ -69,9 +67,14 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapState(useArticleStore, ['getArticles']),
+    },
     async created() {
         try {
             await this.fetchArticles();
+            this.articles = this.getArticles;
+            console.log(this.articles);
         } catch (error) {
             console.log(error);
         }
@@ -95,8 +98,9 @@ export default {
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <ArticlePreview v-if="articles.length > 0" :key="article.id" v-for="article in articles"
-                    :article="article" @view-article="viewArticle" @delete="showDeletePopup" @edit="editArticle" />
+                <ArticlePreview v-if="this.articles && this.articles.length > 0" :key="article.id"
+                    v-for="article in this.articles" :article="article" @view-article="viewArticle"
+                    @delete="showDeletePopup" @edit="editArticle" />
                 <td v-else colspan="5" class="text-center">
                     <h2 class="mt-5">Nessun Articolo Presente nel Database </h2>
                 </td>

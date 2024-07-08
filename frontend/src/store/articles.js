@@ -22,7 +22,6 @@ export const useArticleStore = defineStore({
                     this.articles = articles;
                 }
             } catch (error) {
-                //console.log(error);
                 throw (`Errore - ${error}`);
             }
         },
@@ -36,7 +35,6 @@ export const useArticleStore = defineStore({
                 // Se lo status della risposta è 400 o 500 lancio un errore altrimenti restituisco l'articolo
                 if (res.status === 400 || res.status === 500) {
                     const error = await res.json();
-                    //console.log(error.msg)
                     throw (error.msg)
                 } else {
                     const article = await res.json();
@@ -60,14 +58,12 @@ export const useArticleStore = defineStore({
                 const data = await res.json();
                 // Se lo status della risposta è 400 o 500 lancio un errore altrimenti restituisco il messaggio di successo e l'id dell'articolo aggiunto
                 if (res.status === 400 || res.status === 500) {
-                    console.log("ERRORE")
                     throw (data.msg);
                 } else {
                     return data;
                 }
             }
             catch (error) {
-                console.log(error);
                 throw (`Errore di comunicazione con il server...`);
             }
         },
@@ -95,7 +91,6 @@ export const useArticleStore = defineStore({
         // PUT per la modifica di un articolo
         async editArticle(articleId, article) {
             try {
-                console.log("EDIT: ", ...article)
                 // Richiesta PUT all'API per modificare l'articolo con l'id specificato
                 const res = await fetch(`http://localhost:5000/api/articles/${articleId}`, {
                     method: 'PUT',
@@ -103,7 +98,6 @@ export const useArticleStore = defineStore({
                 });
 
                 const data = await res.json();
-                console.log(data);
                 // Se lo status della risposta è 400 o 500 lancio un errore altrimenti restituisco il messaggio di successo
                 if (res.status === 400 || res.status === 500) {
                     throw (data.msg);
@@ -119,6 +113,16 @@ export const useArticleStore = defineStore({
     getters: {
         getImagesBaseUrl() {
             return this.imagesBaseUrl;
+        },
+        getArticles() {
+            return this.articles.map(article => {
+                return {
+                    id: article.id,
+                    name: article.name,
+                    price: article.price,
+                    description: article.description.substring(0, 50) + '...',
+                }
+            });
         }
     }
 

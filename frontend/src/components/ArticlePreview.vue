@@ -37,7 +37,7 @@ export default {
         <td>{{ article.id }}</td>
         <td class="text-start">{{ article.name }}</td>
         <td class="text-start d-none d-md-table-cell">€ {{ article.price }}</td>
-        <td class="text-start d-none d-lg-table-cell">{{ article.description.slice(0, 50) }}...</td>
+        <td class="text-start d-none d-lg-table-cell">{{ article.description }}</td>
         <td class="text-center">
             <button @click="viewArticle" class="custom-btn detail">
                 <img :src="search" alt="Vedi Dettagli Articolo" title="Vedi Dettagli Articolo" />

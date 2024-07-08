@@ -63,7 +63,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// Aggiunta di un articolo  
+// POST per l'aggiunta di un articolo  
 router.post('/', upload.single('image'), (req, res) => {
     try {
         // Se l'utente non ha inserito il nome o il prezzo dell'articolo viene restituito un messaggio di errore
